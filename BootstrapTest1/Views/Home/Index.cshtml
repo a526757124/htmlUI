@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div id="ng-app" ng-app="demo">
+    Your name: <input type="text" ng-model="yourname" placeholder="World">
+    <hr>
+    Hello {{yourname || 'World'}}!
+
+    <div ng-controller="PhoneListCtrl">
+        <input ng-model="search" />
+        <ul>
+            <li ng-repeat="phone in phones|filter:search">
+                {{phone.Name}}
+                <p>{{phone.Age}}</p>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    var app = angular.module('demo', []).controller('PhoneListCtrl', function ($scope,$http) {
+        $http.post("/Home/GetData", { msg: 'hello word!' }).
+              success(function (data, status, headers, config) {
+                  // this callback will be called asynchronously
+                  // when the response is available
+                  console.log(data);
+                  $scope.phones =data;
+              }).
+              error(function (data, status, headers, config) {
+                  // called asynchronously if an error occurs
+                  // or server returns response with an error status.
+              });
+    });
+
+</script>
